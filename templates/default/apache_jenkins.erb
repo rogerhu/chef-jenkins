@@ -17,7 +17,15 @@
 <% @host_aliases.each do |a| -%>
   ServerAlias       <%= a %>
 <% end -%>
-
+  <% if node[:jenkins][:http_proxy][:error_log] -%>
+  ErrorLog <%= node[:apache][:log_dir] %>/<%= node[:jenkins][:http_proxy][:error_log] %>
+  <% end -%>
+  <% if node[:jenkins][:http_proxy][:access_log] -%>
+  CustomLog <%= node[:apache][:log_dir] %>/<%= node[:jenkins][:http_proxy][:access_log] %> combined
+  <% end -%>
+  <% if node[:jenkins][:http_proxy][:debug_level] -%>
+  LogLevel <%= node[:jenkins][:http_proxy][:debug_level] %>
+  <% end -%>
   # Local reverse proxy authorization override
   # Most unix distribution deny proxy by default
   # (ie /etc/apache2/mods-enabled/proxy.conf in Ubuntu)
